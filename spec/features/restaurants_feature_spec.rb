@@ -1,9 +1,9 @@
 require 'rails_helper'
-require_relative '../factories/user'
 
 feature 'restaurants' do
 
-  let(:user){ create :user }
+  let(:user){ build :user }
+  let(:user2){ build :user2 }
 
   context 'no restaurants haven been added' do
     scenario 'should display a prompt to add a restaurant' do
@@ -28,7 +28,7 @@ feature 'restaurants' do
   context 'creating restaurants' do
     scenario 'prompts user to fill out a form, then displays the new restaurant' do
       visit '/restaurants'
-      sign_in(user)
+      sign_up(user)
       click_link 'Add a restaurant'
       fill_in 'Name', with: 'KFC'
       click_button 'Create Restaurant'
@@ -39,6 +39,7 @@ feature 'restaurants' do
     context 'an invalid restaurant' do
       it 'does not let you submit a name that is too short' do
         visit '/restaurants'
+        sign_up(user)
         click_link 'Add a restaurant'
         fill_in 'Name', with: 'kf'
         click_button 'Create Restaurant'
@@ -46,8 +47,6 @@ feature 'restaurants' do
         expect(page).to have_content 'error'
       end
     end
-
-
   end
 
   context 'viewing restaurants' do
@@ -66,6 +65,7 @@ feature 'restaurants' do
 
     scenario 'let a user edit a restaurant' do
      visit '/restaurants'
+     sign_up(user)
      click_link 'Edit KFC'
      fill_in 'Name', with: 'Kentucky Fried Chicken'
      click_button 'Update Restaurant'
@@ -79,6 +79,7 @@ feature 'restaurants' do
 
     scenario 'removes a restaurant when a user clicks a delete link' do
       visit '/restaurants'
+      sign_up(user)
       click_link 'Delete KFC'
       expect(page).not_to have_content 'KFC'
       expect(page).to have_content 'Restaurant deleted successfully'
@@ -86,26 +87,18 @@ feature 'restaurants' do
 
   end
 
-  # scenario "users can only delete restaurants which they've created" do
-  #   visit '/restaurants'
-  #   click_link 'Sign up'
-  #   fill_in 'Email', with: 'lucy@example.com'
-  #   fill_in 'Password', with: 'lucylucy'
-  #   fill_in 'Password confirmation', with: 'lucylucy'
-  #   click_button 'Sign up'
-  #   click_link 'Add a restaurant'
-  #   fill_in 'Name', with: 'McDonalds'
-  #   click_button 'Create Restaurant'
-  #   click_link 'Sign out'
-  #   click_link 'Sign up'
-  #   fill_in 'Email', with: 'archie@example.com'
-  #   fill_in 'Password', with: 'archiearchie'
-  #   fill_in 'Password confirmation', with: 'archiearchie'
-  #   click_button 'Sign up'
-  #   click_link 'Delete McDonalds'
-  #   expect(page).to have_content 'You only delete a restaurant you created'
-  #   expect(page).to have_content 'McDonalds'
-  # end
+  scenario "users can only delete restaurants which they've created" do
+    visit '/restaurants'
+    sign_up(user)
+    click_link 'Add a restaurant'
+    fill_in 'Name', with: 'McDonalds'
+    click_button 'Create Restaurant'
+    click_link 'Sign out'
+    sign_up(user2)
+    click_link 'Delete McDonalds'
+    expect(page).to have_content 'You can only delete a restaurant you created'
+    expect(page).to have_content 'McDonalds'
+  end
 
 
 
