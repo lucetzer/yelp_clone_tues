@@ -38,22 +38,4 @@ feature 'reviewing' do
     expect(current_path).to eq '/restaurants'
   end
 
-
-  # scenario "users can only delete their own reviews" do
-  #   visit '/restaurants'
-  #   sign_up(user)
-  #   click_link 'Review KFC'
-  #   fill_in "Thoughts", with: "so so"
-  #   select '3', from: 'Rating'
-  #   click_button 'Leave Review'
-  #   click_link 'Sign out'
-  #   sign_up(user2)
-  #   click_link 'Review KFC'
-  #   fill_in "Thoughts", with: "so so"
-  #   select '3', from: 'Rating'
-  #   click_button 'Leave Review'
-  #   expect(page).to have_content 'You have already reviewed this restaurant'
-  #   expect(current_path).to eq '/restaurants'
-  # end
-
 end

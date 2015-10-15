@@ -24,7 +24,8 @@ class ReviewsController < ApplicationController
   end
 
   # def show
-  #   @review = Review.find(params[:id])
+  #   # @review = @restaurant.review.id
+  #   p @restaurant.review.id
   # end
   #
   # def destroy

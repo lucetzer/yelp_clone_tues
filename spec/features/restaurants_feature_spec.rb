@@ -61,17 +61,31 @@ feature 'restaurants' do
   end
 
   context 'editing restaurants' do
-    before { Restaurant.create name: 'KFC' }
 
-    scenario 'let a user edit a restaurant' do
-     visit '/restaurants'
-     sign_up(user)
-     click_link 'Edit KFC'
-     fill_in 'Name', with: 'Kentucky Fried Chicken'
-     click_button 'Update Restaurant'
-     expect(page).to have_content 'Kentucky Fried Chicken'
-     expect(current_path).to eq '/restaurants'
+    scenario "users can edit restaurants they created" do
+      visit '/restaurants'
+      sign_up(user)
+      click_link 'Add a restaurant'
+      fill_in 'Name', with: 'McDonalds'
+      click_button 'Create Restaurant'
+      click_link 'Edit McDonalds'
+      fill_in 'Name', with: 'Maccas'
+      click_button 'Update Restaurant'
+      expect(page).to have_content 'Maccas'
+      expect(current_path).to eq '/restaurants'
     end
+
+    scenario "users can only edit restaurants they've created" do
+      visit '/restaurants'
+      sign_up(user)
+      click_link 'Add a restaurant'
+      fill_in 'Name', with: 'McDonalds'
+      click_button 'Create Restaurant'
+      click_link 'Sign out'
+      sign_up(user2)
+      expect(page).not_to have_content 'Edit McDonalds'
+    end
+
   end
 
   context 'deleting restaurants' do
@@ -95,9 +109,7 @@ feature 'restaurants' do
       click_button 'Create Restaurant'
       click_link 'Sign out'
       sign_up(user2)
-      click_link 'Delete McDonalds'
-      expect(page).to have_content 'You can only delete a restaurant you created'
-      expect(page).to have_content 'McDonalds'
+      expect(page).not_to have_content 'Delete McDonalds'
     end
 
   end
