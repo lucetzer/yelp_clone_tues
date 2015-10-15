@@ -60,14 +60,17 @@ feature 'restaurants' do
     end
   end
 
-  context 'editing restaurants' do
+  context 'editing and deleting restaurants' do
 
-    scenario "users can edit restaurants they created" do
+    before(:each) do
       visit '/restaurants'
       sign_up(user)
       click_link 'Add a restaurant'
       fill_in 'Name', with: 'McDonalds'
       click_button 'Create Restaurant'
+    end
+
+    scenario "users can edit restaurants they created" do
       click_link 'Edit McDonalds'
       fill_in 'Name', with: 'Maccas'
       click_button 'Update Restaurant'
@@ -76,50 +79,23 @@ feature 'restaurants' do
     end
 
     scenario "users can only edit restaurants they've created" do
-      visit '/restaurants'
-      sign_up(user)
-      click_link 'Add a restaurant'
-      fill_in 'Name', with: 'McDonalds'
-      click_button 'Create Restaurant'
       click_link 'Sign out'
       sign_up(user2)
       expect(page).not_to have_content 'Edit McDonalds'
     end
 
-  end
-
-  context 'deleting restaurants' do
-
     scenario 'removes a restaurant when a user clicks a delete link' do
-      visit '/restaurants'
-      sign_up(user)
-      click_link 'Add a restaurant'
-      fill_in 'Name', with: 'KFC'
-      click_button 'Create Restaurant'
-      click_link 'Delete KFC'
-      expect(page).not_to have_content 'KFC'
+      click_link 'Delete McDonalds'
+      expect(page).not_to have_content 'McDonalds'
       expect(page).to have_content 'Restaurant deleted successfully'
     end
 
     scenario "users can only delete restaurants which they've created" do
-      visit '/restaurants'
-      sign_up(user)
-      click_link 'Add a restaurant'
-      fill_in 'Name', with: 'McDonalds'
-      click_button 'Create Restaurant'
       click_link 'Sign out'
       sign_up(user2)
       expect(page).not_to have_content 'Delete McDonalds'
     end
 
   end
-
-
-
-
-
-
-
-
 
 end

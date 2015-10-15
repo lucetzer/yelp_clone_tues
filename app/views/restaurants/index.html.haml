@@ -8,6 +8,7 @@
       = link_to "Delete #{restaurant.name}", restaurant_path(restaurant), method: :delete
     - if current_user && !current_user.has_reviewed?(restaurant)
       = link_to "Review #{restaurant.name}", new_restaurant_review_path(restaurant)
+    %br
 - else
   No restaurants yet
 
@@ -24,7 +25,9 @@
             = review.thoughts
             %strong= review.rating
             \/5
-            -# = link_to "Delete Review for #{restaurant.name}", review_path(review), method: :delete
+            %br
+            - if current_user && current_user.id == review.user_id
+              = link_to "Delete Review for #{restaurant.name}", restaurant_review_path(restaurant, review), method: :delete
     - else
       %p No reviews
 

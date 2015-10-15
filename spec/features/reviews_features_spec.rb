@@ -5,37 +5,33 @@ feature 'reviewing' do
   let(:user){ build :user }
   let(:user2){ build :user2 }
 
+  before(:each) do
+    visit '/restaurants'
+    sign_up(user)
+    click_link 'Review KFC'
+    fill_in "Thoughts", with: "so so"
+    select '3', from: 'Rating'
+    click_button 'Leave Review'
+  end
+
   scenario 'allows users to leave a review using a form' do
-     visit '/restaurants'
-     sign_up(user)
-     click_link 'Review KFC'
-     fill_in "Thoughts", with: "so so"
-     select '3', from: 'Rating'
-     click_button 'Leave Review'
      expect(current_path).to eq '/restaurants'
-     expect(page).to have_content('so so')
+     expect(page).to have_content 'so so'
   end
 
   scenario "users can only leave one review per restaurant" do
-    visit '/restaurants'
-    sign_up(user)
-    click_link 'Review KFC'
-    fill_in "Thoughts", with: "so so"
-    select '3', from: 'Rating'
-    click_button 'Leave Review'
     expect(page).not_to have_content 'Review KFC'
   end
 
-  scenario "users can only delete their own reviews" do
-    visit '/restaurants'
-    sign_up(user)
-    click_link 'Review KFC'
-    fill_in "Thoughts", with: "so so"
-    select '3', from: 'Rating'
-    click_button 'Leave Review'
+  scenario "users can delete their own reviews" do
     click_link 'Delete Review for KFC'
-    expect(page).not_to have_content 'Review for KFC'
-    expect(current_path).to eq '/restaurants'
+    expect(page).not_to have_content 'so so'
+  end
+
+  scenario "users cannot delete someone else's review" do
+    click_link 'Sign out'
+    sign_up(user2)
+    expect(page).not_to have_content 'Delete Review for KFC'
   end
 
 end
