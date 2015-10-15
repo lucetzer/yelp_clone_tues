@@ -87,18 +87,21 @@ feature 'restaurants' do
 
   end
 
-  scenario "users can only delete restaurants which they've created" do
-    visit '/restaurants'
-    sign_up(user)
-    click_link 'Add a restaurant'
-    fill_in 'Name', with: 'McDonalds'
-    click_button 'Create Restaurant'
-    click_link 'Sign out'
-    sign_up(user2)
-    click_link 'Delete McDonalds'
-    expect(page).to have_content 'You can only delete a restaurant you created'
-    expect(page).to have_content 'McDonalds'
-  end
+  # scenario "users can only delete restaurants which they've created" do
+  #   visit '/restaurants'
+  #   sign_up(user)
+  #   click_link 'Add a restaurant'
+  #   fill_in 'Name', with: 'McDonalds'
+  #   click_button 'Create Restaurant'
+  #   click_link 'Sign out'
+  #   sign_up(user2)
+  #   click_link 'Delete McDonalds'
+  #   expect(page).to have_content 'You can only delete a restaurant you created'
+  #   expect(page).to have_content 'McDonalds'
+  # end
+
+
+
 
 
 
