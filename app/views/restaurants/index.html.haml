@@ -27,6 +27,7 @@
     - if current_user && !current_user.has_reviewed?(restaurant)
       = link_to "Review #{restaurant.name}", new_restaurant_review_path(restaurant)
     %br
+    %h3 Average rating: #{restaurant.average_rating.to_i}
 
 - else
   No restaurants yet
