@@ -11,9 +11,15 @@ Rails.application.routes.draw do
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
-    resources :restaurants do
-      resources :reviews
+    resources :restaurants, shallow: true do
+      resources :reviews do
+        resources :endorsements
+      end
     end
+
+    # resources :restaurants do
+    #   resources :reviews
+    # end
 
     root to: "restaurants#index"
 

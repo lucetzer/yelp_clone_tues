@@ -1,7 +1,9 @@
-= form_for @restaurant do |f|
-  = f.label :name
-  = f.text_field :name
-  = f.submit
+= form_for @restaurant, html: {multipart: true} do |f|
+  %p= f.label :name
+  %p= f.text_field :name
+  Choose an image for your restaurant
+  %p= f.file_field :image
+  %p= f.submit
 
 - if @restaurant.errors.any?
   %section#errors

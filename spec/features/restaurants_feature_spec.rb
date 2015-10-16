@@ -36,6 +36,19 @@ feature 'restaurants' do
       expect(current_path).to eq '/restaurants'
     end
 
+    # scenario 'correct restaurant image is displayed for the restaurant ' do
+    #   visit '/restaurants'
+    #   sign_up(user)
+    #   click_link 'Add a restaurant'
+    #   fill_in 'Name', with: 'Pancake King'
+    #   click_button 'Choose File'
+    #   attach_file "pancakes", './assets/pancakes.png'
+    #   click_button 'Create Restaurant'
+    #   expect(page).to have_content 'Pancake King'
+    #   page.should have_css('img', text: "pancakes.jpg")
+    #   expect(current_path).to eq '/restaurants'
+    # end
+
     context 'an invalid restaurant' do
       it 'does not let you submit a name that is too short' do
         visit '/restaurants'

@@ -2,7 +2,7 @@
   - @restaurants.each do |restaurant|
     %br
     = link_to restaurant.name, restaurant_path(restaurant)
-    %br
+    %p= image_tag restaurant.image.url(:thumb)
     - if current_user && current_user.id == restaurant.user_id
       = link_to "Edit #{restaurant.name}", edit_restaurant_path(restaurant)
       = link_to "Delete #{restaurant.name}", restaurant_path(restaurant), method: :delete
@@ -21,8 +21,12 @@
             %em= time_ago_in_words(review.updated_at)
             %em ago
             %br
+            = link_to "Endorse Review", review_endorsements_path(review), class: 'endorsements-link'
+            %span.endorsements_count= review.endorsements.count
+            = 'endorsement'.pluralize review.endorsements.count
+            %br
             - if current_user && current_user.id == review.user_id
-              = link_to "Delete Review for #{restaurant.name}", restaurant_review_path(restaurant, review), method: :delete
+              = link_to "Delete Review for #{restaurant.name}", review_path(review), method: :delete
     - else
       %p No reviews
 
